@@ -1,0 +1,24 @@
+﻿@page
+@using System.Security.Cryptography
+@using WebApi
+@using Website.Controllers
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+	
+	<input id="Button1" type="button" value="Получить рандомное число" />
+	<p>
+		Рандомное число [-10000; 50000] <p id="test"> </p>
+		<script>
+			var button = document.getElementById("Button1");
+			button.addEventListener("click",
+				function() {
+					document.getElementById("test").innerHTML = @RandomNumber.GetThreadRandom().Next(-10000,50000);
+				});
+			
+		</script>
+	</p>
+</div>

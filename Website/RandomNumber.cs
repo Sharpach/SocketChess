@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 
-namespace WebApi
+namespace Website
 {
 	public static class RandomNumber
 	{

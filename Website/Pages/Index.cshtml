@@ -1,7 +1,5 @@
 ﻿@page
 @using System.Security.Cryptography
-@using WebApi
-@using Website.Controllers
 @model IndexModel
 @{
 	ViewData["Title"] = "Home page";
@@ -15,25 +13,14 @@
 	<p id="test"> </p>
 	<script>
 		var button = document.getElementById("Button1");
-
 		var xhttp = new XMLHttpRequest();
-		
-		xhttp.open("GET","https://localhost:44389/api/RandomNumber");
 
+		xhttp.open("GET","api/RandomNumber");
 		button.addEventListener("click",
 			function() {
 				xhttp.send();
 			});
-		
 	</script>
 	</p>
-
 </div>
-@*button.addEventListener("click",
-		function() {
-			document.getElementById("test").innerHTML = @RandomNumber.GetThreadRandom().Next(-10000,50000);
-		});*
-
-
-		});
-	});  *@
+		

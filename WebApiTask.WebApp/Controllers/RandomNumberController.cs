@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Website.Controllers
+namespace WebApiTask.WebApp.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]

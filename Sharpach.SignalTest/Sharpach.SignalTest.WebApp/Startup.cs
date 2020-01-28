@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Sharpach.SignalTest.Core;
+using Sharpach.SignalTest.WebApp.Hubs;
 
 namespace Sharpach.SignalTest.WebApp
 {
@@ -20,8 +22,12 @@ namespace Sharpach.SignalTest.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<UserManager>();
+            services.AddSingleton<GroupManager>();
 
             services.AddControllersWithViews();
+
+            services.AddSignalR();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -52,6 +58,7 @@ namespace Sharpach.SignalTest.WebApp
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<ChatHub>("/chathub");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");

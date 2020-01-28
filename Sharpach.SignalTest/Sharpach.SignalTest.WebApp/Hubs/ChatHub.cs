@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Sharpach.SignalTest.Core;
@@ -26,21 +27,61 @@ namespace Sharpach.SignalTest.WebApp.Hubs
 
         public async Task LogOff()
         {
-            _userManager.RemoveConnection(Context.ConnectionId);
+            if (_userManager.IsAuthed(Context.ConnectionId))
+            {
+                _userManager.RemoveConnection(Context.ConnectionId);
+            }
+            else
+            {
+                throw new AuthenticationException("You must register first");
+            }
         }
         public async Task RelayMessage(string groupName, string message)
         {
-            await Clients.Clients(_groupManager.GetUsers(groupName)).ReceiveMessage(message);
+            if (_userManager.IsAuthed(Context.ConnectionId))
+            {
+                await Clients.Clients(_groupManager.GetUsers(groupName)).ReceiveMessage(message);
+            }
+            else
+            {
+                throw new AuthenticationException("You must register first");
+            }
         }
 
         public async Task GroupJoin(string groupName)
         {
-            _groupManager.AddToGroup( _userManager.GetUser(Context.ConnectionId).Username, groupName);
+            if (_userManager.IsAuthed(Context.ConnectionId))
+            {
+                _groupManager.AddToGroup( _userManager.GetUser(Context.ConnectionId).Username, groupName);
+            }
+            else
+            {
+                throw new AuthenticationException("You must register first");
+            }
         }
 
         public async Task GroupLeave(string groupName)
         {
-            _groupManager.RemoveFromGroup(_userManager.GetUser(Context.ConnectionId).Username, groupName);
+            if (_userManager.IsAuthed(Context.ConnectionId))
+            {
+                _groupManager.RemoveFromGroup(_userManager.GetUser(Context.ConnectionId).Username, groupName);
+            }
+            else
+            {
+                throw new AuthenticationException("You must register first");
+            }
+        }
+
+        public async Task GroupCreate(string groupName)
+        {
+            if (_userManager.IsAuthed(Context.ConnectionId))
+            {
+                _groupManager.CreateGroup(new GroupInfo{ Name = groupName });
+            }
+            else
+            {
+                throw new AuthenticationException("You must register first");
+            }
         }
 
         public async Task<List<GroupInfo>> GetGroups()

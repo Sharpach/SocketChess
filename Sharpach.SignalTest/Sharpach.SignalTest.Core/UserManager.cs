@@ -72,5 +72,10 @@ namespace Sharpach.SignalTest.Core
                 throw new Exception($"There are no users for this connection {connectionId}");
             }
         }
+
+        public bool IsAuthed(string connectionId)
+        {
+            return _connections.ContainsKey(connectionId);
+        }
     }
 }
